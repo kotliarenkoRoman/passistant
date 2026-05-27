@@ -7,49 +7,28 @@ from functools import wraps
 from prettytable import PrettyTable, ALL
 from colorama import Fore
 
-#: Supported CLI commands with their required attributes.
+#: Supported CLI commands — single source of truth for validation and help output.
 CMDS = {
-    "hello": {"attrs": []},
-    "add": {"attrs": ["name", "phone"]},
-    "phone": {"attrs": ["phone"]},
-    "change": {"attrs": ["name", "phone", "new_phone"]},
-    "delete": {"attrs": ["name"]},
-    "all": {"attrs": []},
-    "add-birthday": {"attrs": ["name", "birthday"]},
-    "show-birthday": {"attrs": ["name"]},
-    "birthdays": {"attrs": [], "optional": True},
-    "add-email": {"attrs": ["name", "email"]},
-    "edit-email": {"attrs": ["name", "email"]},
-    "add-address": {"attrs": ["name", "address"], "plural": True},
-    "edit-address": {"attrs": ["name", "address"], "plural": True},
-    "add-note":    {"attrs": ["name", "content"], "plural": True},
-    "remove-note": {"attrs": ["name", "title"]},
-    "edit-note":   {"attrs": ["name", "title", "content"], "plural": True},
-    "find":        {"attrs": ["query"], "plural": True},
-    "help":        {"attrs": []},
+    "hello":        {"attrs": [],                                  "usage": "",                              "descr": "Greet the assistant"},
+    "add":          {"attrs": ["name", "phone"],                   "usage": '"name" [phone]',                "descr": "Add a new contact or phone to existing"},
+    "phone":        {"attrs": ["phone"],                           "usage": "[phone]",                       "descr": "Find contact by phone number"},
+    "change":       {"attrs": ["name", "phone", "new_phone"],      "usage": '"name" [phone] [new_phone]',    "descr": "Change a contact's phone number"},
+    "delete":       {"attrs": ["name"],                            "usage": '"name"',                        "descr": "Delete a contact"},
+    "all":          {"attrs": [],                                  "usage": "",                              "descr": "Show all contacts"},
+    "find":         {"attrs": ["query"],   "plural": True,         "usage": "[query...]",                    "descr": "Search across all fields"},
+    "add-birthday": {"attrs": ["name", "birthday"],                "usage": '"name" [DD.MM.YYYY]',           "descr": "Add birthday to a contact"},
+    "show-birthday":{"attrs": ["name"],                            "usage": '"name"',                        "descr": "Show contact details"},
+    "birthdays":    {"attrs": [],          "optional": True,       "usage": "[days]",                        "descr": "Show upcoming birthdays (default: 7 days)"},
+    "add-email":    {"attrs": ["name", "email"],                   "usage": '"name" [email]',                "descr": "Add email to a contact"},
+    "edit-email":   {"attrs": ["name", "email"],                   "usage": '"name" [email]',                "descr": "Edit contact's email"},
+    "add-address":  {"attrs": ["name", "address"], "plural": True, "usage": '"name" [address...]',           "descr": "Add address to a contact"},
+    "edit-address": {"attrs": ["name", "address"], "plural": True, "usage": '"name" [address...]',           "descr": "Edit contact's address"},
+    "add-note":     {"attrs": ["name", "content"], "plural": True, "usage": '"name" [content...]',           "descr": "Add a note to a contact"},
+    "remove-note":  {"attrs": ["name", "title"],                   "usage": '"name" [title]',                "descr": "Remove a note by title"},
+    "edit-note":    {"attrs": ["name", "title", "content"], "plural": True, "usage": '"name" [title] [content...]', "descr": "Edit a note by title"},
+    "help":         {"attrs": [],                                  "usage": "",                              "descr": "Show this help table"},
+    "exit / close": {"attrs": [],                                  "usage": "",                              "descr": "Exit the assistant"},
 }
-
-HELP_TABLE = [
-    ("hello",        "",                                       "Greet the assistant"),
-    ("add",          '"name" [phone]',                         "Add a new contact or phone to existing"),
-    ("phone",        "[phone]",                                "Find contact by phone number"),
-    ("change",       '"name" [phone] [new_phone]',             "Change a contact's phone number"),
-    ("delete",       '"name"',                                 "Delete a contact"),
-    ("all",          "",                                       "Show all contacts"),
-    ("find",         "[query...]",                             "Search across all fields"),
-    ("add-birthday", '"name" [DD.MM.YYYY]',                    "Add birthday to a contact"),
-    ("show-birthday",'"name"',                                 "Show contact details"),
-    ("birthdays",    "[days]",                                 "Show upcoming birthdays (default: 7 days)"),
-    ("add-email",    '"name" [email]',                         "Add email to a contact"),
-    ("edit-email",   '"name" [email]',                         "Edit contact's email"),
-    ("add-address",  '"name" [address...]',                    "Add address to a contact"),
-    ("edit-address", '"name" [address...]',                    "Edit contact's address"),
-    ("add-note",     '"name" [content...]',                    "Add a note to a contact"),
-    ("edit-note",    '"name" [title] [content...]',            "Edit a note by title"),
-    ("remove-note",  '"name" [title]',                         "Remove a note by title"),
-    ("help",         "",                                       "Show this help table"),
-    ("exit / close", "",                                       "Exit the assistant"),
-]
 
 
 def show_help() -> None:
@@ -61,8 +40,8 @@ def show_help() -> None:
     table = PrettyTable(headers)
     table.align = "l"
     table.hrules = ALL
-    for cmd, usage, description in HELP_TABLE:
-        table.add_row([f"{Fore.CYAN}{cmd}{Fore.RESET}", usage, description])
+    for cmd, meta in CMDS.items():
+        table.add_row([f"{Fore.CYAN}{cmd}{Fore.RESET}", meta["usage"], meta["descr"]])
     print(table)
 
 
@@ -83,7 +62,9 @@ def validate_attrs(func):
         is_plural = cmd.get("plural", False)
         is_optional = cmd.get("optional", False)
         invalid = (
-            len(attrs) < len(expected) if (is_plural or is_optional) else len(attrs) != len(expected)
+            len(attrs) < len(expected)
+            if (is_plural or is_optional)
+            else len(attrs) != len(expected)
         )
 
         if invalid:
@@ -157,11 +138,15 @@ def handle(book: AddressBook, name: str, attr: list | None):
             case "remove-note":
                 person_name, title = attr
                 book.remove_note(person_name, title)
-                Alert.show(f"Note '{title}' removed from {person_name}", AlertType.SUCCESS)
+                Alert.show(
+                    f"Note '{title}' removed from {person_name}", AlertType.SUCCESS
+                )
             case "edit-note":
                 person_name, title, content = attr
                 book.edit_note(person_name, title, content)
-                Alert.show(f"Note '{title}' updated for {person_name}", AlertType.SUCCESS)
+                Alert.show(
+                    f"Note '{title}' updated for {person_name}", AlertType.SUCCESS
+                )
             case "find":
                 query = attr[0]
                 results = book.find(query)
@@ -178,7 +163,10 @@ def handle(book: AddressBook, name: str, attr: list | None):
                     if days <= 0:
                         raise ValueError
                 except ValueError:
-                    Alert.show("Days must be a positive integer. Usage: birthdays [days]", AlertType.ERROR)
+                    Alert.show(
+                        "Days must be a positive integer. Usage: birthdays [days]",
+                        AlertType.ERROR,
+                    )
                     return
                 book.birthdays(days)
             case _:
