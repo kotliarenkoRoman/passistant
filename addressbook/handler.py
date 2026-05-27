@@ -131,7 +131,14 @@ def handle(book: AddressBook, name: str, attr: list | None):
             case "all":
                 book.all()
             case "birthdays":
-                book.birthdays()
+                try:
+                    days = int(attr[0]) if attr else 7
+                    if days <= 0:
+                        raise ValueError
+                except ValueError:
+                    Alert.show("Days must be a positive integer. Usage: birthdays [days]", AlertType.ERROR)
+                    return
+                book.birthdays(days)
             case _:
                 Alert.show("Invalid command", AlertType.ERROR)
     except (ValueError, AddressBookError) as e:

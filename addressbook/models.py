@@ -401,8 +401,8 @@ class AddressBook(UserDict):
         else:
             print(self._render_table(self.data.values()))
 
-    def birthdays(self) -> None:
-        """Display contacts with upcoming birthdays within the next 7 days."""
+    def birthdays(self, days: int = 7) -> None:
+        """Display contacts with upcoming birthdays within the next N days."""
         now = dt.today().date()
 
         congrats_dates = []
@@ -411,7 +411,7 @@ class AddressBook(UserDict):
                 continue
             dob_this_year = r.birthday.value.replace(year=now.year).date()
             diff = (dob_this_year - now).days
-            if not (0 <= diff <= 7):
+            if not (0 <= diff <= days):
                 continue
             is_weekend = dob_this_year.weekday() in Config.WEEKEND_DAYS.value
             congrats_date = Utils.shift_to_monday(now) if is_weekend else dob_this_year
@@ -425,7 +425,7 @@ class AddressBook(UserDict):
                 }
             )
 
-        Alert.show(f"Upcoming next week DOB ({len(congrats_dates)}):", AlertType.WARN)
+        Alert.show(f"Upcoming {days} days DOB ({len(congrats_dates)}):", AlertType.WARN)
         if not congrats_dates:
             Alert.show("Nobody..", AlertType.MUTED)
             return
