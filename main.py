@@ -1,5 +1,5 @@
 from colorama import Fore
-import re
+import shlex
 from addressbook import AddressBook, Alert, AlertType
 from addressbook.handler import handle
 import readline
@@ -18,7 +18,7 @@ def setup_readline() -> None:
 
 
 def parse_input(response: str):
-    params = re.split(r"\s{1,}", response.strip())
+    params = shlex.split(response.strip())
     command = params[0]
     args = params[1:]
     return command.lower(), args
