@@ -23,6 +23,7 @@ CMDS = {
     "add-note":    {"attrs": ["name", "content"], "plural": True},
     "remove-note": {"attrs": ["name", "title"]},
     "edit-note":   {"attrs": ["name", "title", "content"], "plural": True},
+    "find":        {"attrs": ["query"], "plural": True},
 }
 
 
@@ -119,6 +120,14 @@ def handle(book: AddressBook, name: str, attr: list | None):
                 person_name, title, content = attr
                 book.edit_note(person_name, title, content)
                 Alert.show(f"Note '{title}' updated for {person_name}", AlertType.SUCCESS)
+            case "find":
+                query = attr[0]
+                results = book.find(query)
+                if not results:
+                    Alert.show(f"No results for '{query}'", AlertType.MUTED)
+                else:
+                    Alert.show(f"Found {len(results)} contact(s):", AlertType.WARN)
+                    print(book._render_table(results))
             case "all":
                 book.all()
             case "birthdays":

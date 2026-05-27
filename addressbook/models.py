@@ -226,6 +226,18 @@ class Record:
             r.notes.append(Note.from_dict(n))
         return r
 
+    def matches(self, query: str) -> bool:
+        q = query.lower()
+        fields = [
+            self.name.value,
+            str(self.birthday) if self.birthday else "",
+            str(self.email) if self.email else "",
+            str(self.address) if self.address else "",
+            *[p.value for p in self.phones],
+            *[n.title + " " + n.content for n in self.notes],
+        ]
+        return any(q in field.lower() for field in fields)
+
     def __str__(self):
         notes_str = "; ".join(str(n) for n in self.notes) or "--"
         return (
@@ -354,7 +366,7 @@ class AddressBook(UserDict):
     def update(self, record: Record):
         self.data[record.name.value] = record
 
-    def _render_table(self) -> PrettyTable:
+    def _render_table(self, records) -> PrettyTable:
         headers = [
             f"{Fore.BLUE}Name{Fore.RESET}",
             f"{Fore.GREEN}Phones{Fore.RESET}",
@@ -365,7 +377,7 @@ class AddressBook(UserDict):
         ]
         table = PrettyTable(headers)
         table.align = "l"
-        for r in self.data.values():
+        for r in records:
             phones = "\n".join(p.value for p in r.phones) or "--"
             notes = "\n".join(n.title for n in r.notes) or "--"
             table.add_row([
@@ -378,13 +390,16 @@ class AddressBook(UserDict):
             ])
         return table
 
+    def find(self, query: str) -> list[Record]:
+        return [r for r in self.data.values() if r.matches(query)]
+
     def all(self) -> None:
         """Show contacts list"""
         Alert.show("List of contacts:", AlertType.WARN)
         if not self.data:
             Alert.show("No users..", AlertType.MUTED)
         else:
-            print(self._render_table())
+            print(self._render_table(self.data.values()))
 
     def birthdays(self) -> None:
         """Display contacts with upcoming birthdays within the next 7 days."""
