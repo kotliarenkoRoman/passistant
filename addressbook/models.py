@@ -2,7 +2,7 @@ from collections import UserDict
 from colorama import Fore
 from datetime import datetime as dt
 from functools import wraps
-from prettytable import PrettyTable
+from prettytable import PrettyTable, ALL
 
 
 from .alert import Alert, AlertType
@@ -377,6 +377,7 @@ class AddressBook(UserDict):
         ]
         table = PrettyTable(headers)
         table.align = "l"
+        table.hrules = ALL
         for r in records:
             phones = "\n".join(p.value for p in r.phones) or "--"
             notes = "\n".join(n.title for n in r.notes) or "--"
