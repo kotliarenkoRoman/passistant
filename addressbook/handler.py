@@ -4,6 +4,8 @@ from .exceptions import (
     AddressBookError,
 )
 from functools import wraps
+from prettytable import PrettyTable, ALL
+from colorama import Fore
 
 #: Supported CLI commands with their required attributes.
 CMDS = {
@@ -24,7 +26,44 @@ CMDS = {
     "remove-note": {"attrs": ["name", "title"]},
     "edit-note":   {"attrs": ["name", "title", "content"], "plural": True},
     "find":        {"attrs": ["query"], "plural": True},
+    "help":        {"attrs": []},
 }
+
+HELP_TABLE = [
+    ("hello",        "",                                  "Greet the assistant"),
+    ("add",          "[name] [phone]",                    "Add a new contact or phone to existing"),
+    ("phone",        "[phone]",                           "Find contact by phone number"),
+    ("change",       "[name] [phone] [new_phone]",        "Change a contact's phone number"),
+    ("delete",       "[name]",                            "Delete a contact"),
+    ("all",          "",                                  "Show all contacts"),
+    ("find",         "[query...]",                        "Search across all fields"),
+    ("add-birthday", "[name] [DD.MM.YYYY]",               "Add birthday to a contact"),
+    ("show-birthday","[name]",                            "Show contact details"),
+    ("birthdays",    "[days]",                            "Show upcoming birthdays (default: 7 days)"),
+    ("add-email",    "[name] [email]",                    "Add email to a contact"),
+    ("edit-email",   "[name] [email]",                    "Edit contact's email"),
+    ("add-address",  "[name] [address...]",               "Add address to a contact"),
+    ("edit-address", "[name] [address...]",               "Edit contact's address"),
+    ("add-note",     "[name] [content...]",               "Add a note to a contact"),
+    ("edit-note",    "[name] [title] [content...]",       "Edit a note by title"),
+    ("remove-note",  "[name] [title]",                    "Remove a note by title"),
+    ("help",         "",                                  "Show this help table"),
+    ("exit / close", "",                                  "Exit the assistant"),
+]
+
+
+def show_help() -> None:
+    headers = [
+        f"{Fore.CYAN}Command{Fore.RESET}",
+        f"{Fore.YELLOW}Usage{Fore.RESET}",
+        f"{Fore.GREEN}Description{Fore.RESET}",
+    ]
+    table = PrettyTable(headers)
+    table.align = "l"
+    table.hrules = ALL
+    for cmd, usage, description in HELP_TABLE:
+        table.add_row([f"{Fore.CYAN}{cmd}{Fore.RESET}", usage, description])
+    print(table)
 
 
 def validate_attrs(func):
@@ -72,6 +111,8 @@ def handle(book: AddressBook, name: str, attr: list | None):
     """Handle and dispatch CLI commands to the corresponding AddressBook operations."""
     try:
         match name:
+            case "help":
+                show_help()
             case "hello":
                 Alert.show("Hello, how can i help you?", AlertType.SUCCESS)
             case "add":
