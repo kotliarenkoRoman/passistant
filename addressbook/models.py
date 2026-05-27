@@ -380,7 +380,10 @@ class AddressBook(UserDict):
         table.hrules = ALL
         for r in records:
             phones = "\n".join(p.value for p in r.phones) or "--"
-            notes = "\n".join(n.title for n in r.notes) or "--"
+            notes = "\n---\n".join(
+                f"{n.date.strftime('%d.%m.%Y')} [{n.title}]\n{n.content}"
+                for n in r.notes
+            ) or "--"
             table.add_row([
                 r.name.value,
                 phones,

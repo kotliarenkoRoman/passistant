@@ -9,25 +9,87 @@ from colorama import Fore
 
 #: Supported CLI commands — single source of truth for validation and help output.
 CMDS = {
-    "hello":        {"attrs": [],                                  "usage": "",                              "descr": "Greet the assistant"},
-    "add":          {"attrs": ["name", "phone"],                   "usage": '"name" [phone]',                "descr": "Add a new contact or phone to existing"},
-    "phone":        {"attrs": ["phone"],                           "usage": "[phone]",                       "descr": "Find contact by phone number"},
-    "change":       {"attrs": ["name", "phone", "new_phone"],      "usage": '"name" [phone] [new_phone]',    "descr": "Change a contact's phone number"},
-    "delete":       {"attrs": ["name"],                            "usage": '"name"',                        "descr": "Delete a contact"},
-    "all":          {"attrs": [],                                  "usage": "",                              "descr": "Show all contacts"},
-    "find":         {"attrs": ["query"],   "plural": True,         "usage": "[query...]",                    "descr": "Search across all fields"},
-    "add-birthday": {"attrs": ["name", "birthday"],                "usage": '"name" [DD.MM.YYYY]',           "descr": "Add birthday to a contact"},
-    "show-birthday":{"attrs": ["name"],                            "usage": '"name"',                        "descr": "Show contact details"},
-    "birthdays":    {"attrs": [],          "optional": True,       "usage": "[days]",                        "descr": "Show upcoming birthdays (default: 7 days)"},
-    "add-email":    {"attrs": ["name", "email"],                   "usage": '"name" [email]',                "descr": "Add email to a contact"},
-    "edit-email":   {"attrs": ["name", "email"],                   "usage": '"name" [email]',                "descr": "Edit contact's email"},
-    "add-address":  {"attrs": ["name", "address"], "plural": True, "usage": '"name" [address...]',           "descr": "Add address to a contact"},
-    "edit-address": {"attrs": ["name", "address"], "plural": True, "usage": '"name" [address...]',           "descr": "Edit contact's address"},
-    "add-note":     {"attrs": ["name", "content"], "plural": True, "usage": '"name" [content...]',           "descr": "Add a note to a contact"},
-    "remove-note":  {"attrs": ["name", "title"],                   "usage": '"name" [title]',                "descr": "Remove a note by title"},
-    "edit-note":    {"attrs": ["name", "title", "content"], "plural": True, "usage": '"name" [title] [content...]', "descr": "Edit a note by title"},
-    "help":         {"attrs": [],                                  "usage": "",                              "descr": "Show this help table"},
-    "exit / close": {"attrs": [],                                  "usage": "",                              "descr": "Exit the assistant"},
+    "hello": {"attrs": [], "usage": "", "descr": "Greet the assistant"},
+    "add": {
+        "attrs": ["name", "phone"],
+        "usage": '"name" [phone]',
+        "descr": "Add a new contact or phone to existing",
+    },
+    "phone": {
+        "attrs": ["phone"],
+        "usage": "[phone]",
+        "descr": "Find contact by phone number",
+    },
+    "change": {
+        "attrs": ["name", "phone", "new_phone"],
+        "usage": '"name" [phone] [new_phone]',
+        "descr": "Change a contact's phone number",
+    },
+    "delete": {"attrs": ["name"], "usage": '"name"', "descr": "Delete a contact"},
+    "all": {"attrs": [], "usage": "", "descr": "Show all contacts"},
+    "find": {
+        "attrs": ["query"],
+        "plural": True,
+        "usage": "[query...]",
+        "descr": "Search across all fields",
+    },
+    "add-birthday": {
+        "attrs": ["name", "birthday"],
+        "usage": '"name" [DD.MM.YYYY]',
+        "descr": "Add birthday to a contact",
+    },
+    "show-birthday": {
+        "attrs": ["name"],
+        "usage": '"name"',
+        "descr": "Show contact details",
+    },
+    "birthdays": {
+        "attrs": [],
+        "optional": True,
+        "usage": "[days]",
+        "descr": "Show upcoming birthdays (default: 7 days)",
+    },
+    "add-email": {
+        "attrs": ["name", "email"],
+        "usage": '"name" [email]',
+        "descr": "Add email to a contact",
+    },
+    "edit-email": {
+        "attrs": ["name", "email"],
+        "usage": '"name" [email]',
+        "descr": "Edit contact's email",
+    },
+    "add-address": {
+        "attrs": ["name", "address"],
+        "plural": True,
+        "usage": '"name" [address...]',
+        "descr": "Add address to a contact",
+    },
+    "edit-address": {
+        "attrs": ["name", "address"],
+        "plural": True,
+        "usage": '"name" [address...]',
+        "descr": "Edit contact's address",
+    },
+    "add-note": {
+        "attrs": ["name", "content"],
+        "plural": True,
+        "usage": '"name" [content...]',
+        "descr": "Add a note to a contact",
+    },
+    "remove-note": {
+        "attrs": ["name", "title"],
+        "usage": '"name" [title]',
+        "descr": "Remove a note by title",
+    },
+    "edit-note": {
+        "attrs": ["name", "title", "content"],
+        "plural": True,
+        "usage": '"name" [title] [content...]',
+        "descr": "Edit a note by title",
+    },
+    "help": {"attrs": [], "usage": "", "descr": "Show this help table"},
+    "exit / close": {"attrs": [], "usage": "", "descr": "Exit the assistant"},
 }
 
 
