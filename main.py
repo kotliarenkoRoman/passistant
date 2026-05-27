@@ -30,7 +30,15 @@ def main():
 
     Alert.show("Welcome to assistant bot!", alert_type=AlertType.INFO)
     while True:
-        response = input("Enter command: ").strip()
+        try:
+            response = input("Enter command: ").strip()
+        except KeyboardInterrupt:
+            print()
+            if readline.get_line_buffer():
+                continue
+            Alert.show("Good bye!", AlertType.SUCCESS)
+            break
+
         if not response:
             continue
         if response in ("exit", "close"):
