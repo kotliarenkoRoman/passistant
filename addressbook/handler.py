@@ -9,7 +9,6 @@ from functools import wraps
 CMDS = {
     "hello": {"attrs": []},
     "add": {"attrs": ["name", "phone"]},
-    "add_user": {"attrs": ["name", "phone"]},
     "phone": {"attrs": ["phone"]},
     "change": {"attrs": ["name", "phone", "new_phone"]},
     "delete": {"attrs": ["name"]},
