@@ -15,7 +15,7 @@ CMDS = {
     "all": {"attrs": []},
     "add-birthday": {"attrs": ["name", "birthday"]},
     "show-birthday": {"attrs": ["name"]},
-    "birthdays": {"attrs": []},
+    "birthdays": {"attrs": [], "optional": True},
     "add-email": {"attrs": ["name", "email"]},
     "edit-email": {"attrs": ["name", "email"]},
     "add-address": {"attrs": ["name", "address"], "plural": True},
@@ -37,13 +37,14 @@ def validate_attrs(func):
         cmd = CMDS.get(cmd_name)
 
         if not cmd:
-            Alert.show(f"Unknow command: '{cmd}'", AlertType.ERROR)
+            Alert.show(f"Unknow command: '{cmd_name}'", AlertType.ERROR)
             return
 
         expected = cmd.get("attrs", [])
         is_plural = cmd.get("plural", False)
+        is_optional = cmd.get("optional", False)
         invalid = (
-            len(attrs) < len(expected) if is_plural else len(attrs) != len(expected)
+            len(attrs) < len(expected) if (is_plural or is_optional) else len(attrs) != len(expected)
         )
 
         if invalid:
