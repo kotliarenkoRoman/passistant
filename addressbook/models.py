@@ -2,6 +2,7 @@ from collections import UserDict
 from colorama import Fore
 from datetime import datetime as dt
 from functools import wraps
+from prettytable import PrettyTable
 
 
 from .alert import Alert, AlertType
@@ -353,14 +354,37 @@ class AddressBook(UserDict):
     def update(self, record: Record):
         self.data[record.name.value] = record
 
+    def _render_table(self) -> PrettyTable:
+        headers = [
+            f"{Fore.BLUE}Name{Fore.RESET}",
+            f"{Fore.GREEN}Phones{Fore.RESET}",
+            f"{Fore.YELLOW}Birthday{Fore.RESET}",
+            f"{Fore.CYAN}Email{Fore.RESET}",
+            f"{Fore.BLUE}Address{Fore.RESET}",
+            f"{Fore.MAGENTA}Notes{Fore.RESET}",
+        ]
+        table = PrettyTable(headers)
+        table.align = "l"
+        for r in self.data.values():
+            phones = "\n".join(p.value for p in r.phones) or "--"
+            notes = "\n".join(n.title for n in r.notes) or "--"
+            table.add_row([
+                r.name.value,
+                phones,
+                str(r.birthday) if r.birthday else "--",
+                str(r.email) if r.email else "--",
+                str(r.address) if r.address else "--",
+                notes,
+            ])
+        return table
+
     def all(self) -> None:
         """Show contacts list"""
         Alert.show("List of contacts:", AlertType.WARN)
         if not self.data:
             Alert.show("No users..", AlertType.MUTED)
         else:
-            for r in self.data.values():
-                print(r)
+            print(self._render_table())
 
     def birthdays(self) -> None:
         """Display contacts with upcoming birthdays within the next 7 days."""
