@@ -1,4 +1,3 @@
-from colorama import Fore
 import shlex
 from addressbook import AddressBook, Alert, AlertType
 from addressbook.handler import handle

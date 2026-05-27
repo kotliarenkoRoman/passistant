@@ -2,7 +2,7 @@ from collections import UserDict
 from colorama import Fore
 from datetime import datetime as dt
 from functools import wraps
-from prettytable import PrettyTable, ALL
+from prettytable import PrettyTable, HRuleStyle
 
 
 from .alert import Alert, AlertType
@@ -65,7 +65,7 @@ class Birthday:
     def value(self, dob: str):
         try:
             self._value = dt.strptime(dob, Config.DATE_FORMAT.value)
-        except:
+        except ValueError:
             raise ValueError("Invalid date format. Use DD.MM.YYYY")
 
     def __str__(self):
@@ -210,7 +210,7 @@ class Record:
         }
 
     @classmethod
-    def from_dict(cls, item: dict) -> Record:
+    def from_dict(cls, item: dict) -> "Record":
         """Unserialize record from dictionary for JSON storage."""
 
         r = cls(item["name"])
@@ -377,7 +377,7 @@ class AddressBook(UserDict):
         ]
         table = PrettyTable(headers)
         table.align = "l"
-        table.hrules = ALL
+        table.hrules = HRuleStyle.ALL
         for r in records:
             phones = "\n".join(p.value for p in r.phones) or "--"
             notes = "\n---\n".join(

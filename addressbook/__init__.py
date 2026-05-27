@@ -1,2 +1,2 @@
-from .models import AddressBook, Record
-from .alert import Alert, AlertType
+from .models import AddressBook as AddressBook, Record as Record
+from .alert import Alert as Alert, AlertType as AlertType

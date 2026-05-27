@@ -4,8 +4,6 @@ from addressbook.book_storage import BookStorage
 from addressbook.exceptions import (
     PhoneNotFoundError,
     PhoneExistsError,
-    ContactNotFoundError,
-    ContactAlreadyExistsError,
     NoteNotFoundError,
     AddressBookError,
 )

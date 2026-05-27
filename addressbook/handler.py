@@ -4,7 +4,7 @@ from .exceptions import (
     AddressBookError,
 )
 from functools import wraps
-from prettytable import PrettyTable, ALL
+from prettytable import PrettyTable, HRuleStyle
 from colorama import Fore
 
 #: Supported CLI commands — single source of truth for validation and help output.
@@ -101,7 +101,7 @@ def show_help() -> None:
     ]
     table = PrettyTable(headers)
     table.align = "l"
-    table.hrules = ALL
+    table.hrules = HRuleStyle.ALL
     for cmd, meta in CMDS.items():
         table.add_row([f"{Fore.CYAN}{cmd}{Fore.RESET}", meta["usage"], meta["descr"]])
     print(table)
