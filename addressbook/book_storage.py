@@ -5,8 +5,7 @@ from abc import ABC, abstractmethod
 
 
 class BookStorage(ABC):
-    _storage_dir = Path.home() / ".passistant"
-    filename = "./addressbook/storage/addressbook"
+    _storage_dir = Path(__file__).parent.parent / "storage"
 
     def __init__(self):
         self.filepath = self.get_filepath()

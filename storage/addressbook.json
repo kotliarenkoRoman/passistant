@@ -1,0 +1,209 @@
+{
+  "Alice Johnson": {
+    "name": "Alice Johnson",
+    "phones": [
+      "0671234567"
+    ],
+    "birthday": "15.03.1990",
+    "address": "12 Baker Street, London",
+    "email": "alice.johnson@gmail.com",
+    "notes": []
+  },
+  "Bob Smith": {
+    "name": "Bob Smith",
+    "phones": [
+      "0682345678",
+      "0991112233"
+    ],
+    "birthday": "22.07.1985",
+    "address": "5 Oak Avenue, New York",
+    "email": "bob.smith@gmail.com",
+    "notes": []
+  },
+  "Carol White": {
+    "name": "Carol White",
+    "phones": [
+      "0503456789"
+    ],
+    "birthday": "30.11.1992",
+    "address": "77 King Street, Manchester",
+    "email": "carol.white@gmail.com",
+    "notes": []
+  },
+  "David Brown": {
+    "name": "David Brown",
+    "phones": [
+      "0734567890"
+    ],
+    "birthday": "05.06.1988",
+    "address": "23 Park Lane, Birmingham",
+    "email": "david.brown@yahoo.com",
+    "notes": [
+      {
+        "date": "2024-03-15T14:30:00",
+        "title": "meeting_with_david",
+        "content": "meeting with david on friday at 3pm"
+      }
+    ]
+  },
+  "Eva Green": {
+    "name": "Eva Green",
+    "phones": [
+      "0665678901"
+    ],
+    "birthday": "18.01.1995",
+    "address": "9 Liberty Square, Boston",
+    "email": "eva.green@gmail.com",
+    "notes": []
+  },
+  "Frank Miller": {
+    "name": "Frank Miller",
+    "phones": [
+      "0976789012"
+    ],
+    "birthday": "12.09.1980",
+    "address": "34 Elm Street, Chicago",
+    "email": "frank.miller@gmail.com",
+    "notes": []
+  },
+  "Grace Lee": {
+    "name": "Grace Lee",
+    "phones": [
+      "0507890123"
+    ],
+    "birthday": "25.04.1993",
+    "address": "88 Maple Avenue, Seattle",
+    "email": "grace.lee@gmail.com",
+    "notes": [
+      {
+        "date": "2024-02-20T09:00:00",
+        "title": "grace_birthday_gift",
+        "content": "buy a birthday gift for grace"
+      }
+    ]
+  },
+  "Henry Wilson": {
+    "name": "Henry Wilson",
+    "phones": [
+      "0638901234"
+    ],
+    "birthday": "07.12.1978",
+    "address": "15 Harbor View, San Francisco",
+    "email": "henry.wilson@gmail.com",
+    "notes": []
+  },
+  "Iryna Kovalenko": {
+    "name": "Iryna Kovalenko",
+    "phones": [
+      "0679012345",
+      "0441234567"
+    ],
+    "birthday": "03.08.1991",
+    "address": "2 Independence Ave, Washington DC",
+    "email": "iryna.kovalenko@gmail.com",
+    "notes": []
+  },
+  "James Taylor": {
+    "name": "James Taylor",
+    "phones": [
+      "0980123456"
+    ],
+    "birthday": "19.02.1987",
+    "address": "67 Central Park West, New York",
+    "email": "james.taylor@yahoo.com",
+    "notes": [
+      {
+        "date": "2024-04-01T11:00:00",
+        "title": "james_debt",
+        "content": "james owes 500 usd since april"
+      }
+    ]
+  },
+  "Kate Bondarenko": {
+    "name": "Kate Bondarenko",
+    "phones": [
+      "0671234890"
+    ],
+    "birthday": "11.05.1996",
+    "address": "19 Sunset Blvd, Los Angeles",
+    "email": "kate.bondarenko@gmail.com",
+    "notes": []
+  },
+  "Liam Davis": {
+    "name": "Liam Davis",
+    "phones": [
+      "0502345901"
+    ],
+    "birthday": "28.10.1983",
+    "address": "45 River Road, Denver",
+    "email": "liam.davis@gmail.com",
+    "notes": []
+  },
+  "Maria Shevchenko": {
+    "name": "Maria Shevchenko",
+    "phones": [
+      "0663456012"
+    ],
+    "birthday": "14.06.1994",
+    "address": "8 Greenfield Road, Austin",
+    "email": "maria.shevchenko@gmail.com",
+    "notes": [
+      {
+        "date": "2024-05-05T16:00:00",
+        "title": "send_maria_docs",
+        "content": "send documents to maria before end of month"
+      }
+    ]
+  },
+  "Nick Petrenko": {
+    "name": "Nick Petrenko",
+    "phones": [
+      "0734567123"
+    ],
+    "birthday": "09.03.1982",
+    "address": "31 Church Street, Nashville",
+    "email": "nick.petrenko@gmail.com",
+    "notes": []
+  },
+  "Olga Melnyk": {
+    "name": "Olga Melnyk",
+    "phones": [
+      "0975678234"
+    ],
+    "birthday": "21.07.1997",
+    "address": "55 Broadway, New York",
+    "email": "olga.melnyk@gmail.com",
+    "notes": []
+  },
+  "roman": {
+    "name": "roman",
+    "phones": [
+      "1234567890"
+    ],
+    "birthday": null,
+    "address": null,
+    "email": null,
+    "notes": [
+      {
+        "date": "2026-05-28T01:26:02.904292",
+        "title": "just_a_test",
+        "content": "Just a test note about the Roman"
+      },
+      {
+        "date": "2026-05-28T01:26:18.887948",
+        "title": "just_a_test_2",
+        "content": "Just a test note about the Roman"
+      }
+    ]
+  },
+  "Roman Kot": {
+    "name": "Roman Kot",
+    "phones": [
+      "0987654321"
+    ],
+    "birthday": null,
+    "address": null,
+    "email": null,
+    "notes": []
+  }
+}
