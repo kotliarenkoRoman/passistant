@@ -4,8 +4,15 @@ from addressbook.handler import handle
 import readline
 import atexit
 from pathlib import Path
+from addressbook.handler import CMDS
 
 HISTORY_FILE = Path(".cli_history")
+
+
+def completer(text: str, state: int):
+    commands = list(CMDS.keys())
+    matches = [c for c in commands if c.startswith(text)]
+    return matches[state] if state < len(matches) else None
 
 
 def setup_readline() -> None:
@@ -14,6 +21,12 @@ def setup_readline() -> None:
         readline.read_history_file(HISTORY_FILE)
     readline.set_history_length(1000)
     atexit.register(readline.write_history_file, HISTORY_FILE)
+
+    readline.set_completer(completer)
+    if "libedit" in readline.__doc__:
+        readline.parse_and_bind("bind ^I rl_complete")
+    else:
+        readline.parse_and_bind("tab: complete")
 
 
 def parse_input(response: str):
@@ -28,6 +41,10 @@ def main():
     book = AddressBook("json")
 
     Alert.show("Welcome to assistant bot!", alert_type=AlertType.INFO)
+    Alert.show(
+        "Use 'help' to see list of command. Use <Tab> for autocomplete commands",
+        alert_type=AlertType.MUTED,
+    )
     while True:
         try:
             response = input("Enter command: ").strip()

@@ -118,7 +118,11 @@ class Note:
         self.date = date or dt.now()
 
     def to_dict(self) -> dict:
-        return {"date": self.date.isoformat(), "title": self.title, "content": self.content}
+        return {
+            "date": self.date.isoformat(),
+            "title": self.title,
+            "content": self.content,
+        }
 
     @classmethod
     def from_dict(cls, data: dict) -> "Note":
@@ -251,13 +255,13 @@ class Record:
 
 
 class AddressBook(UserDict):
-    def __init__(self, storageType=None):
+    def __init__(self, storage_type=None):
         super().__init__()
-        self.storage = self.set_storage(storageType)
+        self.storage = self.set_storage(storage_type)
         self.data: dict[str, Record] = self.storage.load_data()
 
-    def set_storage(self, storageType: str) -> BookStorage:
-        match storageType:
+    def set_storage(self, storage_type: str) -> BookStorage:
+        match storage_type:
             case "json":
                 return JsonStorage()
             case _:
@@ -380,18 +384,23 @@ class AddressBook(UserDict):
         table.hrules = HRuleStyle.ALL
         for r in records:
             phones = "\n".join(p.value for p in r.phones) or "--"
-            notes = "\n---\n".join(
-                f"{n.date.strftime('%d.%m.%Y')} [{n.title}]\n{n.content}"
-                for n in r.notes
-            ) or "--"
-            table.add_row([
-                r.name.value,
-                phones,
-                str(r.birthday) if r.birthday else "--",
-                str(r.email) if r.email else "--",
-                str(r.address) if r.address else "--",
-                notes,
-            ])
+            notes = (
+                "\n---\n".join(
+                    f"{n.date.strftime('%d.%m.%Y')} [{n.title}]\n{n.content}"
+                    for n in r.notes
+                )
+                or "--"
+            )
+            table.add_row(
+                [
+                    r.name.value,
+                    phones,
+                    str(r.birthday) if r.birthday else "--",
+                    str(r.email) if r.email else "--",
+                    str(r.address) if r.address else "--",
+                    notes,
+                ]
+            )
         return table
 
     def find(self, query: str) -> list[Record]:
