@@ -88,8 +88,19 @@ CMDS = {
         "usage": '"name" [title] [content...]',
         "descr": "Edit a note by title",
     },
+    "add-tag": {
+        "attrs": ["name", "tag"],
+        "usage": '"name" [tag]',
+        "descr": "Add a tag to a contact",
+    },
+    "remove-tag": {
+        "attrs": ["name", "tag"],
+        "usage": '"name" [tag]',
+        "descr": "Remove a tag from a contact",
+    },
     "help": {"attrs": [], "usage": "", "descr": "Show this help table"},
-    "exit / close": {"attrs": [], "usage": "", "descr": "Exit the assistant"},
+    "exit": {"attrs": [], "usage": "", "descr": "Exit the assistant"},
+    "close": {"attrs": [], "usage": "", "descr": "Exit the assistant"},
 }
 
 
@@ -209,6 +220,14 @@ def handle(book: AddressBook, name: str, attr: list | None):
                 Alert.show(
                     f"Note '{title}' updated for {person_name}", AlertType.SUCCESS
                 )
+            case "add-tag":
+                person_name, tag = attr
+                book.add_tag(person_name, tag)
+                Alert.show(f"Tag added for {person_name}", AlertType.SUCCESS)
+            case "remove-tag":
+                person_name, tag = attr
+                book.remove_tag(person_name, tag)
+                Alert.show(f"Tag '{tag}' removed from {person_name}", AlertType.SUCCESS)
             case "find":
                 query = attr[0]
                 results = book.find(query)

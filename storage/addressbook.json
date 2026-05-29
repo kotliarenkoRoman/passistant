@@ -7,7 +7,8 @@
     "birthday": "15.03.1990",
     "address": "12 Baker Street, London",
     "email": "alice.johnson@gmail.com",
-    "notes": []
+    "notes": [],
+    "tags": []
   },
   "Bob Smith": {
     "name": "Bob Smith",
@@ -18,7 +19,8 @@
     "birthday": "22.07.1985",
     "address": "5 Oak Avenue, New York",
     "email": "bob.smith@gmail.com",
-    "notes": []
+    "notes": [],
+    "tags": []
   },
   "Carol White": {
     "name": "Carol White",
@@ -28,7 +30,8 @@
     "birthday": "30.11.1992",
     "address": "77 King Street, Manchester",
     "email": "carol.white@gmail.com",
-    "notes": []
+    "notes": [],
+    "tags": []
   },
   "David Brown": {
     "name": "David Brown",
@@ -44,7 +47,8 @@
         "title": "meeting_with_david",
         "content": "meeting with david on friday at 3pm"
       }
-    ]
+    ],
+    "tags": []
   },
   "Eva Green": {
     "name": "Eva Green",
@@ -54,7 +58,8 @@
     "birthday": "18.01.1995",
     "address": "9 Liberty Square, Boston",
     "email": "eva.green@gmail.com",
-    "notes": []
+    "notes": [],
+    "tags": []
   },
   "Frank Miller": {
     "name": "Frank Miller",
@@ -64,7 +69,8 @@
     "birthday": "12.09.1980",
     "address": "34 Elm Street, Chicago",
     "email": "frank.miller@gmail.com",
-    "notes": []
+    "notes": [],
+    "tags": []
   },
   "Grace Lee": {
     "name": "Grace Lee",
@@ -80,7 +86,8 @@
         "title": "grace_birthday_gift",
         "content": "buy a birthday gift for grace"
       }
-    ]
+    ],
+    "tags": []
   },
   "Henry Wilson": {
     "name": "Henry Wilson",
@@ -90,7 +97,8 @@
     "birthday": "07.12.1978",
     "address": "15 Harbor View, San Francisco",
     "email": "henry.wilson@gmail.com",
-    "notes": []
+    "notes": [],
+    "tags": []
   },
   "Iryna Kovalenko": {
     "name": "Iryna Kovalenko",
@@ -101,7 +109,8 @@
     "birthday": "03.08.1991",
     "address": "2 Independence Ave, Washington DC",
     "email": "iryna.kovalenko@gmail.com",
-    "notes": []
+    "notes": [],
+    "tags": []
   },
   "James Taylor": {
     "name": "James Taylor",
@@ -117,7 +126,8 @@
         "title": "james_debt",
         "content": "james owes 500 usd since april"
       }
-    ]
+    ],
+    "tags": []
   },
   "Kate Bondarenko": {
     "name": "Kate Bondarenko",
@@ -127,7 +137,8 @@
     "birthday": "11.05.1996",
     "address": "19 Sunset Blvd, Los Angeles",
     "email": "kate.bondarenko@gmail.com",
-    "notes": []
+    "notes": [],
+    "tags": []
   },
   "Liam Davis": {
     "name": "Liam Davis",
@@ -137,7 +148,8 @@
     "birthday": "28.10.1983",
     "address": "45 River Road, Denver",
     "email": "liam.davis@gmail.com",
-    "notes": []
+    "notes": [],
+    "tags": []
   },
   "Maria Shevchenko": {
     "name": "Maria Shevchenko",
@@ -153,7 +165,8 @@
         "title": "send_maria_docs",
         "content": "send documents to maria before end of month"
       }
-    ]
+    ],
+    "tags": []
   },
   "Nick Petrenko": {
     "name": "Nick Petrenko",
@@ -163,7 +176,8 @@
     "birthday": "09.03.1982",
     "address": "31 Church Street, Nashville",
     "email": "nick.petrenko@gmail.com",
-    "notes": []
+    "notes": [],
+    "tags": []
   },
   "Olga Melnyk": {
     "name": "Olga Melnyk",
@@ -173,7 +187,8 @@
     "birthday": "21.07.1997",
     "address": "55 Broadway, New York",
     "email": "olga.melnyk@gmail.com",
-    "notes": []
+    "notes": [],
+    "tags": []
   },
   "roman": {
     "name": "roman",
@@ -194,7 +209,8 @@
         "title": "just_a_test_2",
         "content": "Just a test note about the Roman"
       }
-    ]
+    ],
+    "tags": []
   },
   "Roman Kot": {
     "name": "Roman Kot",
@@ -204,6 +220,10 @@
     "birthday": null,
     "address": null,
     "email": null,
-    "notes": []
+    "notes": [],
+    "tags": [
+      "test",
+      "test345"
+    ]
   }
 }

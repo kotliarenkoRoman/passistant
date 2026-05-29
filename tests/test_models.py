@@ -1,10 +1,12 @@
 import pytest
-from addressbook.models import Record, AddressBook, Phone, Birthday, Email
+from addressbook.models import Record, AddressBook, Phone, Birthday, Email, Tag
 from addressbook.book_storage import BookStorage
 from addressbook.exceptions import (
     PhoneNotFoundError,
     PhoneExistsError,
     NoteNotFoundError,
+    TagExistsError,
+    TagNotFoundError,
     AddressBookError,
 )
 
@@ -58,6 +60,23 @@ class TestBirthdayValidation:
     def test_invalid_format_raises(self):
         with pytest.raises(ValueError, match="DD.MM.YYYY"):
             Birthday("1990-03-15")
+
+
+class TestTagValidation:
+    def test_valid_tag(self):
+        t = Tag("python")
+        assert t.value == "python"
+
+    def test_str_adds_hash(self):
+        assert str(Tag("python")) == "#python"
+
+    def test_too_short_raises(self):
+        with pytest.raises(ValueError, match="3 symbols"):
+            Tag("py")
+
+    def test_exactly_3_chars_accepted(self):
+        t = Tag("dev")
+        assert t.value == "dev"
 
 
 class TestEmailValidation:
@@ -160,6 +179,45 @@ class TestRecord:
         with pytest.raises(NoteNotFoundError):
             record.remove_note("nonexistent_title")
 
+    def test_add_tag(self, record):
+        record.add_tag("python")
+        assert len(record.tags) == 1
+        assert record.tags[0].value == "python"
+
+    def test_add_duplicate_tag_raises(self, record):
+        record.add_tag("python")
+        with pytest.raises(TagExistsError):
+            record.add_tag("python")
+
+    def test_has_tag_found(self, record):
+        record.add_tag("python")
+        assert record.has_tag("python") is not None
+
+    def test_has_tag_not_found(self, record):
+        assert record.has_tag("python") is None
+
+    def test_remove_tag(self, record):
+        record.add_tag("python")
+        record.remove_tag("python")
+        assert len(record.tags) == 0
+
+    def test_remove_tag_not_found_raises(self, record):
+        with pytest.raises(TagNotFoundError):
+            record.remove_tag("python")
+
+    def test_tags_serialized_in_to_dict(self, record):
+        record.add_tag("python")
+        d = record.to_dict()
+        assert "python" in d["tags"]
+
+    def test_tags_restored_from_dict(self, record):
+        record.add_tag("python")
+        record.add_tag("gamer")
+        r2 = Record.from_dict(record.to_dict())
+        assert len(r2.tags) == 2
+        assert r2.has_tag("python") is not None
+        assert r2.has_tag("gamer") is not None
+
 
 # ---------------------------------------------------------------------------
 # Record.matches (search)
@@ -261,6 +319,24 @@ class TestAddressBook:
         title = book_with_contact.data["Alice"].notes[0].title
         book_with_contact.remove_note("Alice", title)
         assert len(book_with_contact.data["Alice"].notes) == 0
+
+    def test_add_tag(self, book_with_contact):
+        book_with_contact.add_tag("Alice", "python")
+        assert len(book_with_contact.data["Alice"].tags) == 1
+
+    def test_add_duplicate_tag_raises(self, book_with_contact):
+        book_with_contact.add_tag("Alice", "python")
+        with pytest.raises(AddressBookError):
+            book_with_contact.add_tag("Alice", "python")
+
+    def test_remove_tag(self, book_with_contact):
+        book_with_contact.add_tag("Alice", "python")
+        book_with_contact.remove_tag("Alice", "python")
+        assert len(book_with_contact.data["Alice"].tags) == 0
+
+    def test_remove_tag_not_found_raises(self, book_with_contact):
+        with pytest.raises(AddressBookError):
+            book_with_contact.remove_tag("Alice", "python")
 
     def test_find_by_name(self, book_with_contact):
         results = book_with_contact.find("alice")

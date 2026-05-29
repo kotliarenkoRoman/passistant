@@ -13,6 +13,8 @@ from .exceptions import (
     ContactAlreadyExistsError,
     PhoneExistsError,
     NoteNotFoundError,
+    TagExistsError,
+    TagNotFoundError,
 )
 from .utils import Config, Utils
 from .book_storage import BookStorage, PickleStorage, JsonStorage
@@ -116,22 +118,48 @@ class Note:
         self.title = title
         self.content = content
         self.date = date or dt.now()
+        # self.tags = []
 
     def to_dict(self) -> dict:
         return {
             "date": self.date.isoformat(),
             "title": self.title,
             "content": self.content,
+            # "tags": "|".join(f"#{tag}" for tag in self.tags),
         }
 
     @classmethod
     def from_dict(cls, data: dict) -> "Note":
         n = cls(data["title"], data["content"])
         n.date = dt.fromisoformat(data["date"])
+        # n.tags = data["tags"].split("|")
         return n
+
+    # def tags_str(self) -> str:
+    #     if self.tags:
+    #         return "|".join(f"{tag}" for tag in self.tags)
+    #     return ""
 
     def __str__(self):
         return f"{self.date.strftime('%d.%m.%Y %H:%M')} [{self.title}]: {self.content}"
+
+
+class Tag:
+    def __init__(self, value):
+        self.value = value
+
+    @property
+    def value(self):
+        return self._value
+
+    @value.setter
+    def value(self, tag: str):
+        if not len(tag) >= 3:
+            raise ValueError("Tag must be at least 3 symbols")
+        self._value = tag
+
+    def __str__(self):
+        return f"#{self.value}"
 
 
 class Record:
@@ -142,6 +170,7 @@ class Record:
         self.address = None
         self.email = None
         self.notes: list[Note] = []
+        self.tags = []
 
     def add_phone(self, phone: str) -> None:
         if self.find_phone(phone):
@@ -164,6 +193,20 @@ class Record:
         if not exists:
             raise PhoneNotFoundError(phone)
         self.phones.remove(exists)
+
+    def add_tag(self, tag: str) -> None:
+        if self.has_tag(tag):
+            raise TagExistsError(tag, self.name.value)
+        self.tags.append(Tag(tag))
+
+    def has_tag(self, tag: str) -> None:
+        return next((x for x in self.tags if x.value == tag), None)
+
+    def remove_tag(self, tag: str):
+        exists = self.has_tag(tag)
+        if not exists:
+            raise TagNotFoundError(tag)
+        self.tags.remove(exists)
 
     def add_birthday(self, dob: str) -> None:
         self.birthday = Birthday(dob)
@@ -211,6 +254,7 @@ class Record:
             "address": self.address.value if self.address else None,
             "email": self.email.value if self.email else None,
             "notes": [n.to_dict() for n in self.notes],
+            "tags": [t.value for t in self.tags],
         }
 
     @classmethod
@@ -228,6 +272,8 @@ class Record:
             r.add_phone(p)
         for n in item.get("notes", []):
             r.notes.append(Note.from_dict(n))
+        for t in item.get("tags", []):
+            r.add_tag(t)
         return r
 
     def matches(self, query: str) -> bool:
@@ -239,6 +285,7 @@ class Record:
             str(self.address) if self.address else "",
             *[p.value for p in self.phones],
             *[n.title + " " + n.content for n in self.notes],
+            *[t.value for t in self.tags],
         ]
         return any(q in field.lower() for field in fields)
 
@@ -251,6 +298,7 @@ class Record:
             f"{Fore.BLUE}Address:{Fore.RESET} {self.address}, "
             f"{Fore.GREEN}phones:{Fore.RESET} {'; '.join(p.value for p in self.phones)}, "
             f"{Fore.MAGENTA}notes:{Fore.RESET} {notes_str}"
+            f"{Fore.LIGHTBLACK_EX}tags:{Fore.RESET} {'; '.join(t.value for t in self.tags)}"
         )
 
 
@@ -344,6 +392,16 @@ class AddressBook(UserDict):
         r = self.find_by("name", name)
         r.edit_note(title, content)
 
+    @savedata
+    def add_tag(self, name: str, tag: str) -> None:
+        r = self.find_by("name", name)
+        r.add_tag(tag)
+
+    @savedata
+    def remove_tag(self, name: str, tag: str) -> None:
+        r = self.find_by("name", name)
+        r.remove_tag(tag)
+
     def add_record(self, record: Record) -> None:
         if self.data.get(record.name.value):
             raise ContactAlreadyExistsError(record.name.value)
@@ -378,12 +436,14 @@ class AddressBook(UserDict):
             f"{Fore.CYAN}Email{Fore.RESET}",
             f"{Fore.BLUE}Address{Fore.RESET}",
             f"{Fore.MAGENTA}Notes{Fore.RESET}",
+            f"{Fore.LIGHTBLACK_EX}Tags{Fore.RESET}",
         ]
         table = PrettyTable(headers)
         table.align = "l"
         table.hrules = HRuleStyle.ALL
         for r in records:
             phones = "\n".join(p.value for p in r.phones) or "--"
+            tags = "\n".join(f"#{t.value}" for t in r.tags) or "--"
             notes = (
                 "\n---\n".join(
                     f"{n.date.strftime('%d.%m.%Y')} [{n.title}]\n{n.content}"
@@ -399,6 +459,7 @@ class AddressBook(UserDict):
                     str(r.email) if r.email else "--",
                     str(r.address) if r.address else "--",
                     notes,
+                    tags,
                 ]
             )
         return table

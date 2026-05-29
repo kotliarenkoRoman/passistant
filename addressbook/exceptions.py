@@ -34,3 +34,13 @@ class ValidationError(AddressBookError):
 class NoteNotFoundError(AddressBookError):
     def __init__(self, title: str):
         super().__init__(f"Note '{title}' not found")
+
+
+class TagExistsError(AddressBookError):
+    def __init__(self, tag: str, name: str):
+        super().__init__(f"The user {name} already has tagged as '#{tag}'")
+
+
+class TagNotFoundError(AddressBookError):
+    def __init__(self, tag: str):
+        super().__init__(f"Tag '{tag}' not found")
