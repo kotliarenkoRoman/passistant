@@ -6,8 +6,10 @@ A command-line personal assistant for managing contacts and notes. Data is store
 
 - Store contacts with name, phones, email, address, and birthday
 - Add multiple phone numbers per contact
+- Add multiple tags per contact
 - Attach notes to contacts with auto-generated titles
 - Global search across all fields (name, phone, email, address, birthday, notes)
+- Search only by Tags using `#<tag name>` in search query
 - Upcoming birthday notifications for a configurable number of days
 - Phone and email validation on input
 - Pretty-printed color table output
@@ -40,27 +42,29 @@ Data is saved to `~/.passistant/addressbook.json` automatically after every chan
 
 > Names containing spaces must be wrapped in quotes: `"Alice Johnson"`
 
-| Command | Usage | Description |
-|---|---|---|
-| `hello` | | Greet the assistant |
-| `add` | `"name" [phone]` | Add a new contact or phone to existing |
-| `phone` | `[phone]` | Find contact by phone number |
-| `change` | `"name" [phone] [new_phone]` | Change a contact's phone number |
-| `delete` | `"name"` | Delete a contact |
-| `all` | | Show all contacts as a table |
-| `find` | `[query...]` | Search across all fields |
-| `add-birthday` | `"name" [DD.MM.YYYY]` | Add birthday to a contact |
-| `show-birthday` | `"name"` | Show full contact details |
-| `birthdays` | `[days]` | Upcoming birthdays (default: 7 days) |
-| `add-email` | `"name" [email]` | Add email to a contact |
-| `edit-email` | `"name" [email]` | Edit contact's email |
-| `add-address` | `"name" [address...]` | Add address to a contact |
-| `edit-address` | `"name" [address...]` | Edit contact's address |
-| `add-note` | `"name" [content...]` | Add a note to a contact |
-| `edit-note` | `"name" [title] [content...]` | Edit a note by title |
-| `remove-note` | `"name" [title]` | Remove a note by title |
-| `help` | | Show command reference table |
-| `exit` / `close` | | Exit the assistant |
+| Command          | Usage                         | Description                            |
+|------------------|-------------------------------|----------------------------------------|
+| `hello`          |                               | Greet the assistant                    |
+| `add`            | `"name" [phone]`              | Add a new contact or phone to existing |
+| `phone`          | `[phone]`                     | Find contact by phone number           |
+| `change`         | `"name" [phone] [new_phone]`  | Change a contact's phone number        |
+| `delete`         | `"name"`                      | Delete a contact                       |
+| `all`            |                               | Show all contacts as a table           |
+| `find`           | `[query...]`                  | Search across all fields               |
+| `add-birthday`   | `"name" [DD.MM.YYYY]`         | Add birthday to a contact              |
+| `show-birthday`  | `"name"`                      | Show full contact details              |
+| `birthdays`      | `[days]`                      | Upcoming birthdays (default: 7 days)   |
+| `add-email`      | `"name" [email]`              | Add email to a contact                 |
+| `edit-email`     | `"name" [email]`              | Edit contact's email                   |
+| `add-address`    | `"name" [address...]`         | Add address to a contact               |
+| `edit-address`   | `"name" [address...]`         | Edit contact's address                 |
+| `add-note`       | `"name" [content...]`         | Add a note to a contact                |
+| `edit-note`      | `"name" [title] [content...]` | Edit a note by title                   |
+| `remove-note`    | `"name" [title]`              | Remove a note by title                 |
+| `add-tag`        | `"name" [tag]`                | Add a tag to a contact                 |
+| `remove-tag`     | `"name" [tag]`                | Remove a tag from a contact            |
+| `help`           |                               | Show command reference table           |
+| `exit` / `close` |                               | Exit the assistant                     |
 
 ## Usage Examples
 
@@ -70,10 +74,13 @@ add-email "Alice Johnson" alice@example.com
 add-address "Alice Johnson" 12 Baker Street, London
 add-birthday "Alice Johnson" 15.03.1990
 add-note "Alice Johnson" call alice about the project meeting
+add-tag "Alice Johnson" weekly-meeting
 
 find alice
 find 1990
 find gmail
+-- find by tag only
+find #weekly-meeting 
 
 birthdays
 birthdays 30
@@ -123,4 +130,5 @@ passistant/
 - **Email**: standard format (`user@domain.tld`)
 - **Birthday**: `DD.MM.YYYY` format
 - **Name**: minimum 3 characters
+- **Tag**: minimum 3 characters
 - **Address**: minimum 5 characters

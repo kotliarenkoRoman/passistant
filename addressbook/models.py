@@ -285,6 +285,8 @@ class Record:
             str(self.address) if self.address else "",
             *[p.value for p in self.phones],
             *[n.title + " " + n.content for n in self.notes],
+            # tag specified search
+            *[f"#{t.value}" for t in self.tags],
             *[t.value for t in self.tags],
         ]
         return any(q in field.lower() for field in fields)
